@@ -86,6 +86,11 @@ You can deploy the OpenShift cluster using one of the options. The Azure portal 
 - [ARM template or Bicep file](https://learn.microsoft.com/en-us/azure/openshift/quickstart-openshift-arm-bicep-template?pivots=aro-bicep), or via 
 - [az aro create](https://learn.microsoft.com/en-us/cli/azure/aro?view=azure-cli-latest) cli command lines. 
 
+The cli command looks much succinct with defined variables. Note that no "=" operator is used.
+```
+az aro create  --resource-group $RESOURCEGROUP --location=$LOCATION --name $CLUSTER --ingress-visibility Private --domain $DOMAIN --worker-count 5 --vnet $aro-vnet --master-subnet $master-subnet --worker-subnet $worker-subnet  --client-id  $SP_CLIENT_ID --client-secret $SP_CLIENT_SECRET --client-secret=$SP_CLIENT_SECRET  
+```
+
 It's worth noting that there are recommended configurations for small, medium and large clusters to support applications such as IBM [Maximo Application Suite](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/ibm-usa-ny-armonk-hq-6275750-ibmcloud-asperia.ibm-maximo-application-suite-byol?tab=overview). 
 
 ```
