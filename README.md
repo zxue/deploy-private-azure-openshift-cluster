@@ -86,6 +86,25 @@ You can deploy the OpenShift cluster using one of the options. The Azure portal 
 - [ARM template or Bicep file](https://learn.microsoft.com/en-us/azure/openshift/quickstart-openshift-arm-bicep-template?pivots=aro-bicep), or via 
 - [az aro create](https://learn.microsoft.com/en-us/cli/azure/aro?view=azure-cli-latest) cli command lines. 
 
+It's worth noting that there are recommended configurations for small, medium and large clusters to support applications such as IBM [Maximo Application Suite](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/ibm-usa-ny-armonk-hq-6275750-ibmcloud-asperia.ibm-maximo-application-suite-byol?tab=overview). 
+
+```
+Supported cluster sizes:
+* Small: Master Nodes (Standard_D8s_v3 x 3) - vCPU:24 Memory:96GB | Worker Nodes (Standard_D16s_v3 x 3) - vCPU:48 Memory:192GB | Bootnode (Standard_D2s_v3 x 1) - vCPU:2 Memory:8GB
+* Medium: Master Nodes (Standard_D8s_v3 x 3) - vCPU:24 Memory:96GB | Worker Nodes (Standard_D16s_v3 x 5) - vCPU:80 Memory:320GB | Bootnode (Standard_D2s_v3 x 1) - vCPU:2 Memory:8GB
+* Large: Master Nodes (Standard_D8s_v3 x 5) - vCPU:40 Memory:160GB | Worker Nodes (Standard_D16s_v3 x 7) - vCPU:112 Memory:448GB | Bootnode (Standard_D2s_v3 x 1) - vCPU:2 Memory:8GB
+```
+
+Similarly, there are minimum CPU and memory requirements if Red Hat [OpenShift Data Foundation (ODF)](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.10/html-single/planning_your_deployment/index#resource-requirements_rhodf) is required.
+
+| Deployment Mode   | Base services     | Additional device Set |
+| ----------------- | ----------------- | --------------------- |
+| Internal          | 30 CPU (logical)  | 6 CPU (logical)       |
+|| 72 GiB memory     | 15 GiB memory     |
+|| 3 storage devices | 3 storage devices |
+| External          | 4 CPU (logical)   | Not applicable        |
+| 16 GiB memory     |
+
 ### Private and Public cluster
 
 When "API server visibility" and "Ingress visibility" are set to "private", the OpenShift cluster is only accessible from the internal networks including the vnet or peered vnet. However, the public IP address is still provisioned for egress traffic. For more details on the networking architecture, check [Network concepts for Azure Red Hat OpenShift](https://learn.microsoft.com/en-us/azure/openshift/concepts-networking).
