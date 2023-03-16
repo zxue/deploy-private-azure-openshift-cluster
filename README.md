@@ -110,7 +110,7 @@ Similarly, there are minimum CPU and memory requirements if Red Hat [OpenShift D
 | External          | 4 CPU (logical)   | Not applicable        |
 || 16 GiB memory     |
 
-### Private and Public cluster
+### What is a Private Cluster
 
 When "API server visibility" and "Ingress visibility" are set to "private", the OpenShift cluster is only accessible from the internal networks including the vnet or peered vnet. However, the public IP address is still provisioned for egress traffic. For more details on the networking architecture, check [Network concepts for Azure Red Hat OpenShift](https://learn.microsoft.com/en-us/azure/openshift/concepts-networking).
 
