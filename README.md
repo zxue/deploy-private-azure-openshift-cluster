@@ -103,7 +103,7 @@ Similarly, there are minimum CPU and memory requirements if Red Hat [OpenShift D
 || 72 GiB memory     | 15 GiB memory     |
 || 3 storage devices | 3 storage devices |
 | External          | 4 CPU (logical)   | Not applicable        |
-| 16 GiB memory     |
+|| 16 GiB memory     |
 
 ### Private and Public cluster
 
