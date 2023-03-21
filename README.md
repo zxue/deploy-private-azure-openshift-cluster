@@ -128,6 +128,18 @@ If you deploy the OpenShift cluster without supplying a valid Red Hat pull secre
 
 ![OpenShift OperatorHub without Operators](media/operatorhub-without-operators.png)
 
+### Obtain OpenShift Cluster Admin Credentials
+
+Before logging in to the OpenShift cluster, you'll need to find the administrator's credentials, user name "kubeadmin" and password. Use the CLI command below. Check [Connect to an Azure Red Hat OpenShift 4 cluster](https://learn.microsoft.com/en-us/azure/openshift/tutorial-connect-cluster#connect-to-the-cluster) for more details
+
+```
+az aro list-credentials --name $CLUSTER --resource-group $RESOURCEGROUP
+```
+
+### Use Azure Active Directory Authentication for OpenShift
+
+By default, kubeadmin and password are used to log in to the OpenShift cluster. However, you can configure OpenID for the OpenShift cluster and log in through Azure Active Directory. Check [Configure Azure Active Directory authentication for an Azure Red Hat OpenShift 4 cluster](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui) for more details.
+
 ## OpenShift Cluster and New ARO Resource Group
 
 Upon a successful deployment, you will find one entry for the OpenShift cluster resource in the specified resource group. 
