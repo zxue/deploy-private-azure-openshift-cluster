@@ -1,6 +1,6 @@
-# Deploy a Private Openshift in Azure
+# Deploy a Private Azure Openshift (ARO)
 
-This document describes the steps involved to deployment a private OpenShift cluster using the managed service in Azure with an existing virtual network and custom DNS. The deployment option is more secure and more closely aligned with the typical production environments as compared to the deployment for a public OpenShift cluster. However, it also brings more complexity before, during and post deployment.
+This document describes the steps involved to deploy a private Azure OpenShift (ARO), the managed service in Azure, to an existing virtual network using a custom DNS server. The deployment option is more secure and more closely aligned with the typical production environments as compared to the deployment for a public OpenShift cluster. However, it also brings more complexity before, during and post deployment.
 
 The purpose of the document is to provide step by step instructions for the deployment in one place, with references to official documentation.
 
@@ -18,8 +18,8 @@ For minimum networking requirements, including vnet and subnets IP address range
 
 For role assignments or permissions, verify that you have the following:
 
-- role assignments of "Contributor" and "Use Access Administrator" to the service principal to the OpenShift cluster resource group
-- role assignments of "Use Access Administrator" to the vnet resource group if it is different from the OpenShift cluster resource group
+- role assignments of "Contributor" and "Use Access Administrator" to the service principal to the OpenShift cluster resource group (or subscription if applicable to simplify the task, especially for dev/test environments).
+- role assignments of "Use Access Administrator" to the vnet resource group if it is different from the OpenShift cluster resource group.
 - no role assignment of "Network Contributor" to the vnet resource group to the service principal and to the built-in managed identity, "Azure Red Hat OpenShift RP" (OpenShift resource provider). Remove the role assignments if they exist. They will be created during deployment and can result in deployment conflict or failure if they pre-exist.
 - role assignment of "Network Contributor" to the routing table to the service principal and to the managed identity, "Azure Red Hat OpenShift RP". The deployment will fail if the role assignments are missing. Note that the routing table may be in its own resource group, separate from that for the OpenShift cluster and the vnet.
 
@@ -56,7 +56,9 @@ PULL_SECRET=$(cat pull-secret.txt)    # Red Hat pull secret text
 #az group create --name $RESOURCEGROUP --location $LOCATION
 
 #Create a service principal for the new Azure AD application
-az ad sp create-for-rbac --name "sp-$RG_NAME-${RANDOM}" > app-service-principal.json SP_CLIENT_ID=$(jq -r '.appId' app-service-principal.json) SP_CLIENT_SECRET=$(jq -r '.password' app-service-principal.json) SP_OBJECT_ID=$(az ad sp show --id $SP_CLIENT_ID | jq -r '.id')
+az ad sp create-for-rbac --name "sp-$RG_NAME-${RANDOM}" > app-service-principal.json SP_CLIENT_ID=$(jq -r '.appId' app-service-principal.json) 
+SP_CLIENT_SECRET=$(jq -r '.password' app-service-principal.json) 
+SP_OBJECT_ID=$(az ad sp show --id $SP_CLIENT_ID | jq -r '.id')
 
 #Use an existing service principal
 SP_OBJECT_ID=$(az ad sp show --id $SP_CLIENT_ID | jq -r '.id')
@@ -64,11 +66,11 @@ SP_OBJECT_ID=$(az ad sp show --id $SP_CLIENT_ID | jq -r '.id')
 #Find object id for "Azure Red Hat OpenShift RP resource provider
 ARO_RP_SP_OBJECT_ID=$(az ad sp list --display-name "Azure Red Hat OpenShift RP" --query [0].id -o tsv)
 
-# remove network contributor role in an existing vnet
-az role assignment delete --assignee xxx  --role "Network Contributor"
-az role assignment delete --assignee xxx --role "Network Contributor"
+# remove network contributor role in the vnet resource group
+az role assignment delete --assignee $SP_OBJECT_ID  --role "Network Contributor"
+az role assignment delete --assignee $ARO_RP_SP_OBJECT_ID --role "Network Contributor"
 
-#assign permissions to the service principal
+#assign permissions to the service principal to the vnet resource group
 #az role assignment create  --role 'Contributor'  --assignee-object-id $SP_OBJECT_ID  --resource-group $RESOURCEGROUP  --assignee-principal-type 'ServicePrincipal'
 #az role assignment create  --role 'User Access Administrator'  --assignee-object-id $SP_OBJECT_ID  --resource-group $RESOURCEGROUP  --assignee-principal-type 'ServicePrincipal'
 
