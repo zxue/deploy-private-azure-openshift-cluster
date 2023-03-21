@@ -1,4 +1,4 @@
-# Deploy a Private Azure Openshift (ARO)
+# Deploy a Private Azure Openshift (ARO) Cluster
 
 This document describes the steps involved to deploy a private Azure OpenShift (ARO), the managed service in Azure, to an existing virtual network using a custom DNS server. The deployment option is more secure and more closely aligned with the typical production environments as compared to the deployment for a public OpenShift cluster. However, it also brings more complexity before, during and post deployment.
 
