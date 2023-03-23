@@ -196,12 +196,6 @@ The default [Pod CIDR](https://learn.microsoft.com/en-us/azure/openshift/concept
 
 When the Pod IP address range overlaps with internal IP address space, as we've seen in practice, users with conflicting private IP addresses cannot access the OpenShift cluster. This is because the requests are redirected to and treated as the internal communications of the cluster.
 
-### Connecting to the Database Takes a Long Time
-
-Connecting to the database and loading the settings can take some time. However, if the database connection or configuration seems to take a long time, you can check maxinst pod and run a Linux command `ps aux` and see if updatedb or maxinst processes are running.
-
-Also, you can check the status of WorkspaceManage CR, and see the status of the deployment and the database.
-
 ## Contributors
 
-Many thanks to my colleague, Jonathan Rossi, Jenny Wang and Farhan Ali, who helped review the doc and provided constructive comments.
+Many thanks to my colleague, Jonathan Rossi and Farhan Ali, who helped review the doc and provided constructive comments.
