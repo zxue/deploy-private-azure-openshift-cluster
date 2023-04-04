@@ -138,6 +138,44 @@ Before logging in to the OpenShift cluster, you'll need to find the administrato
 az aro list-credentials --name $CLUSTER --resource-group $RESOURCEGROUP
 ```
 
+### Install OpenShift® Data Foundation (ODF) Storage Classes
+
+By default, an OpenShift cluster on Azure comes with two storage classes. While it is possible to use them to run the Ansible playbooks, it is much easier to work with ODF, previously known as OpenShift Container Storage (OCS). For example, you can use the ceph storage classes to deploy IBM Maximo Application Suite (MAS). 
+
+  - Storage class (ReadWriteOnce): managed-csi
+  - Storage class (ReadWriteMany): managed-premium
+
+Maximo Application Suite and its dependencies require storage classes that support ReadWriteOnce (RWO) and ReadWriteMany (RWX) access modes:
+  - ReadWriteOnce volumes can be mounted as read-write by multiple pods on a single node.
+  - ReadWriteMany volumes can be mounted as read-write by multiple pods across many nodes.
+
+To install ODF, search "ODF" under Operators | OperatorHub from the OpenShift console. Choose the default options to complete the step. 
+
+![OpenShift Data Foundation Install](media/ocp-odf-install.png)
+
+Once ODF is installed, create a StorageSystem instance. Create 2 TiB or more storage on at least 3 worker nodes.
+
+![OpenShift Storage System](media/odf-storage-system.png)
+
+When the StorageSystem instance is created, three new storage classes are added. By default, the Ansible playbooks use the "
+ocs-storagecluster-ceph-rbd" storage class.
+
+![OpenShift Storage Classes](media/ocp-storage-classes.png)
+
+> **Note:** Make sure that you allocate adequate resources for worker nodes. For more details, see [ODF Resource requirements](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.10/html-single/planning_your_deployment/index#resource-requirements_rhodf).
+
+### ODF and Azure Storage Account
+
+After installing ODF, you find that an Azure storage account named as "noobaaxxx" is created automatically in the ARO resource group. We've seen that storage account container service with public access "Enabled", and in recent deployments with public access "Disabled". In either case, you cannot modify the permission settings because the ARO resource group is read-only, nor can you access the blobs in the container service.
+
+For customers who have deployed a private ARO cluster, the storage account with public access enabled is a potential concern. Ideally the setting should be set to "Disabled" by default, which may be the case already given that ARO is a managed services, and some explanations are given in terms of what blobs or files are gathered in the storage container.
+
+![ARO Storage Account](media/aro-storage.png)
+
+The Multicloud Object Gateway (MCG) operator is responsible for creating the Azure storage account. A default backing store is created as part of the deployment depending on the platform that the OpenShift Container Platform is running on. For example, when OpenShift Container Platform or OpenShift Data Foundation is deployed on Amazon Web Services (AWS), it results in a default backing store which is an AWS::S3 bucket. Similarly, for Microsoft Azure, the default backing store is a blob container and so on.
+
+Check [OpenShift Data Foundation operators](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.10/html/red_hat_openshift_data_foundation_architecture/openshift_data_foundation_operators#noobaa-operator_rhodf) for more details.
+
 ### Use Azure Active Directory Authentication for OpenShift
 
 By default, kubeadmin and password are used to log in to the OpenShift cluster. However, you can configure OpenID for the OpenShift cluster and log in through Azure Active Directory. Check [Configure Azure Active Directory authentication for an Azure Red Hat OpenShift 4 cluster](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui) for more details.
