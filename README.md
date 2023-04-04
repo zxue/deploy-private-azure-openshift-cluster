@@ -180,6 +180,11 @@ Check [OpenShift Data Foundation operators](https://access.redhat.com/documentat
 
 ![ODF BackingStore](media/odf-backstore.png)
 
+From the Azure portal, you can see that both storage account blob container and tables are used to store data files.
+
+![ARO Blobs and Tables](media/aro-storage-blobs-tables.png)
+
+
 ### Use Azure Active Directory Authentication for OpenShift
 
 By default, kubeadmin and password are used to log in to the OpenShift cluster. However, you can configure OpenID for the OpenShift cluster and log in through Azure Active Directory. Check [Configure Azure Active Directory authentication for an Azure Red Hat OpenShift 4 cluster](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui) for more details.
