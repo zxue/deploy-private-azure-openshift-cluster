@@ -174,7 +174,11 @@ For customers who have deployed a private ARO cluster, the storage account with 
 
 The Multicloud Object Gateway (MCG) operator is responsible for creating the Azure storage account. A default backing store is created as part of the deployment depending on the platform that the OpenShift Container Platform is running on. For example, when OpenShift Container Platform or OpenShift Data Foundation is deployed on Amazon Web Services (AWS), it results in a default backing store which is an AWS::S3 bucket. Similarly, for Microsoft Azure, the default backing store is a blob container and so on.
 
+You can navigate to Data Foundation in the ARO cluster. Open the noobaa default backing store yaml file, where you can see the mentioning of target blob container name and the type of "azure-blob".
+
 Check [OpenShift Data Foundation operators](https://access.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.10/html/red_hat_openshift_data_foundation_architecture/openshift_data_foundation_operators#noobaa-operator_rhodf) for more details.
+
+![ODF BackingStore](media/odf-backstore.png)
 
 ### Use Azure Active Directory Authentication for OpenShift
 
