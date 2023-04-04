@@ -180,7 +180,7 @@ Check [OpenShift Data Foundation operators](https://access.redhat.com/documentat
 
 ![ODF BackingStore](media/odf-backstore.png)
 
-From the Azure portal, you can see that both storage account blob container and tables are used to store data files.
+From the Azure portal, you can see that both storage account blob containers and tables are used to store data files.
 
 ![ARO Blobs and Tables](media/aro-storage-blobs-tables.png)
 
